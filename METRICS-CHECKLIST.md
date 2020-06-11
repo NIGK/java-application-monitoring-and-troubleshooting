@@ -5,6 +5,7 @@ Hardware
 --------
 - [ ] Total RAM:
 - [ ] Total HDD:
+- [ ] CPU Usage
 
 OS
 --
