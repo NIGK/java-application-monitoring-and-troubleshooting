@@ -502,17 +502,56 @@ rm -rf dbo-db
 
 ### Then answered and reviewed at debrief
 - [ ] Free HDD space? Free RAM?
+[root@c146d4164f8a agile-practices-application]# df -ah
+Filesystem      Size  Used Avail Use% Mounted on
+overlay          63G  2.7G   57G   5% /
+
+[root@c146d4164f8a agile-practices-application]# free -m
+              total        used        free      shared  buff/cache   available
+Mem:           1991         741         590           8         659        1111
+Swap:          1023          49         974
+
 - [ ] How many JVMs running?
+
+[root@c146d4164f8a agile-practices-application]# jps
+259 Jps
+61 dbo-1.0-SNAPSHOT.jar
+
 - [ ] What DBMS used for application?
+
 - [ ] What JVM version used for application? What are the parameters, properties and arguments used?
+java-1.8.0-openjdk-1.8.0.252
+
+jcmd
+-XX:CICompilerCount=2 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof -XX:InitialHeapSize=134217728 -XX:+ManagementServer -XX:MaxHeapSize=134217728 -XX:MaxNewSize=44564480 -XX:MinHeapDeltaBytes=524288 -XX:NewSize=44564480 -XX:OldSize=89653248 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC
+
+ps -ef
+ -Xms128m -Xmx128m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=heapdump.hprof -Dderby.stream.error.file=log/derby.log -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=0.0.0.0 -jar target/dbo-1.0-SNAPSHOT.jar --spring.profiles.active=qa --server.port=8080
+
 - [x] How many Docker containers are running? What images used?
+docker ps
+1
+docker images
+3
 - [ ] What are the `health` indicator for application?
+
 - [ ] What is the application uptime?
+ [root@c146d4164f8a agile-practices-application]# jcmd 61 VM.uptime
+61:
+1264.279 s
+
 - [ ] What is the CPU usage for application?
+PID USER      PR  NI      VIRT     RES    SHR S   %CPU  %MEM     TIME+ COMMAND
+   61 root     20   0   2735248  434080  16104 S  114.0  21.3  22:59.63 java
+
 - [ ] How many http requests servlet container handled by different URLs? 
+6
+http://169.254.231.173:8080/dbo/swagger-ui.html#/
+
 - [ ] How many http sessions are active?
+tomcat_sessions_active_current_sessions 0
 - [ ] What is the current `system load average`?
-  
+system_load_average_1m{env="prod",instance="localhost:8080",job="app"}	16.66  
 ---
 
 ## Typical JVM memory issues (3)
